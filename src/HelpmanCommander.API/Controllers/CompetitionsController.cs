@@ -4,23 +4,22 @@ using HelpmanCommander.Data;
 using HelpmanCommander.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Task = System.Threading.Tasks.Task;
 
 namespace HelpmanCommander.API.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class CompetitionsController : Controller
     {
-        private ICompetitionRepository _repository;
-
+        private readonly ICompetitionRepository _repository;
 
         public CompetitionsController(ICompetitionRepository repository)
         {
             _repository = repository;
         }
 
-        // GET: api/<controller>
+        // GET: api/competitions
         [HttpGet]
         public async Task<ActionResult<Competition[]>> Get()
         {
@@ -28,6 +27,22 @@ namespace HelpmanCommander.API.Controllers
             {
                 var results = await _repository.GetAllCompetitionAsync();
                 return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
+            }
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Competition>> Get(int id)
+        {
+            try
+            {
+                var result = await _repository.GetCompetitionAsync(id, true);
+                if (result == null) return NotFound("Competition not found.");
+
+                return result;
             }
             catch (Exception)
             {

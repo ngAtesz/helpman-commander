@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using HelpmanCommander.Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -54,9 +53,20 @@ namespace HelpmanCommander.Data
             return await query.ToArrayAsync();
         }
 
-        public Task<Competition> GetCompetitionAsync(int id, bool includeExercises = false)
+        public async Task<Competition> GetCompetitionAsync(int id, bool includeExercises = false)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation($"Getting a concrete competition");
+
+            IQueryable<Competition> query = _context.Competitions.Include(c => c.Stations);
+
+            if (includeExercises)
+            {
+                query = query.Include(c => c.Stations).ThenInclude(s => s.Exercises);
+            }
+
+            query = query.Where(c => c.Id == id);
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }
