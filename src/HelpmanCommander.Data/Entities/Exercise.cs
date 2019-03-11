@@ -14,9 +14,6 @@ namespace HelpmanCommander.Data.Entities
         [MaxLength(1000)]
         public string Description { get; set; }
 
-        public int StationId { get; set; }
-        public virtual Station Station { get; set; }
-
         public virtual ICollection<ExerciseTask> Tasks { get; set; }
     }
 }

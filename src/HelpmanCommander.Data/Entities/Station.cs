@@ -16,9 +16,6 @@ namespace HelpmanCommander.Data.Entities
         [MaxLength(1000)]
         public string Description { get; set; }
 
-        public int CompetitionId { get; set; }
-        public virtual Competition Competition { get; set; }
-
         public ICollection<Exercise> Exercises { get; set; }
     }
 }
