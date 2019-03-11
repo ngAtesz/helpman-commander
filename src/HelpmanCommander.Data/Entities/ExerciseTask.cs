@@ -1,4 +1,4 @@
-﻿namespace HelpmanCommander.Data.Models
+﻿namespace HelpmanCommander.Data.Entities
 {
     public class ExerciseTask
     {

@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace HelpmanCommander.Data.Models
+namespace HelpmanCommander.Data.Entities
 {
     public class Station
     {
@@ -17,5 +18,7 @@ namespace HelpmanCommander.Data.Models
 
         public int CompetitionId { get; set; }
         public virtual Competition Competition { get; set; }
+
+        public ICollection<Exercise> Exercises { get; set; }
     }
 }

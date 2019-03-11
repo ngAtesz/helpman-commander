@@ -1,4 +1,4 @@
-﻿using HelpmanCommander.Data.Models;
+﻿using HelpmanCommander.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

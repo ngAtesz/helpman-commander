@@ -19,7 +19,7 @@ namespace HelpmanCommander.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.Competition", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Competition", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace HelpmanCommander.Data.Migrations
                     b.ToTable("Competitions");
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.Exercise", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Exercise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,7 +66,7 @@ namespace HelpmanCommander.Data.Migrations
                     b.ToTable("Exercises");
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.ExerciseTask", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.ExerciseTask", b =>
                 {
                     b.Property<int>("ExerciseId");
 
@@ -81,7 +81,7 @@ namespace HelpmanCommander.Data.Migrations
                     b.ToTable("ExerciseTask");
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.Station", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Station", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +105,7 @@ namespace HelpmanCommander.Data.Migrations
                     b.ToTable("Stations");
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.Task", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Task", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,7 +295,7 @@ namespace HelpmanCommander.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.Competition", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Competition", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
                         .WithMany()
@@ -303,38 +303,38 @@ namespace HelpmanCommander.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.Exercise", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Exercise", b =>
                 {
-                    b.HasOne("HelpmanCommander.Data.Models.Station", "Station")
-                        .WithMany()
+                    b.HasOne("HelpmanCommander.Data.Entities.Station", "Station")
+                        .WithMany("Exercises")
                         .HasForeignKey("StationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.ExerciseTask", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.ExerciseTask", b =>
                 {
-                    b.HasOne("HelpmanCommander.Data.Models.Exercise", "Exercise")
+                    b.HasOne("HelpmanCommander.Data.Entities.Exercise", "Exercise")
                         .WithMany("Tasks")
                         .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("HelpmanCommander.Data.Models.Task", "Task")
+                    b.HasOne("HelpmanCommander.Data.Entities.Task", "Task")
                         .WithMany("Exercises")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.Station", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Station", b =>
                 {
-                    b.HasOne("HelpmanCommander.Data.Models.Competition", "Competition")
+                    b.HasOne("HelpmanCommander.Data.Entities.Competition", "Competition")
                         .WithMany("Stations")
                         .HasForeignKey("CompetitionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HelpmanCommander.Data.Models.Task", b =>
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Task", b =>
                 {
-                    b.HasOne("HelpmanCommander.Data.Models.Task", "PrerequisiteTask")
+                    b.HasOne("HelpmanCommander.Data.Entities.Task", "PrerequisiteTask")
                         .WithMany("DependentTasks")
                         .HasForeignKey("PrerequisiteTaskId");
                 });
