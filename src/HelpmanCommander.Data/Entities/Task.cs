@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HelpmanCommander.Data.Entities
 {
@@ -16,6 +17,8 @@ namespace HelpmanCommander.Data.Entities
         public bool IsDefaultTask { get; set; }
 
         public int? PrerequisiteTaskId { get; set; }
+
+        [ForeignKey(nameof(PrerequisiteTaskId))]
         public virtual Task PrerequisiteTask { get; set; }
 
         public HashSet<Task> DependentTasks { get; set; }

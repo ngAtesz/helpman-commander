@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace HelpmanCommander.Data.Entities
@@ -19,8 +20,11 @@ namespace HelpmanCommander.Data.Entities
         public DateTime? DateOfEvent { get; set; }
 
         [Required]
+        public string OwnerId { get; set; }
+
+        [ForeignKey(nameof(OwnerId))]
         public virtual IdentityUser Owner { get; set; }
 
-        public List<Station> Stations { get; set; }
+        public virtual ICollection<Station> Stations { get; set; }
     }
 }
