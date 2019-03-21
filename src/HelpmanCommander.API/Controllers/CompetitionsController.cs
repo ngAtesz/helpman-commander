@@ -13,7 +13,7 @@ namespace HelpmanCommander.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompetitionsController : Controller
+    public class CompetitionsController : ControllerBase
     {
         private readonly ICompetitionRepository _repository;
         private readonly IMapper _mapper;
@@ -87,7 +87,7 @@ namespace HelpmanCommander.API.Controllers
                 var competition = await _repository.GetCompetitionAsync(id);
                 if (competition == null) return NotFound();
 
-                _mapper.Map(model, competition);
+                _mapper.Map(model, competition, opt => opt.AfterMap((from, to) => { to.Id = id; }));
 
                 if (await _repository.SaveChangesAsync())
                 {
