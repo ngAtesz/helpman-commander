@@ -13,5 +13,9 @@ namespace HelpmanCommander.Data
         //Competitions
         Task<Competition[]> GetAllCompetitionAsync(bool includeExercises = false);
         Task<Competition> GetCompetitionAsync(int id, bool includeExercises = false);
+        
+        //Stations
+        Task<Station[]> GetStationsByCompetitionAsync(int competitionId);
+        Task<Station> GetStationAsync(int id);
     }
 }

@@ -24,8 +24,8 @@ namespace HelpmanCommander.API.Controllers
                                         LinkGenerator linkGenerator)
         {
             _repository = repository;
-            this._mapper = mapper;
-            this._linkGenerator = linkGenerator;
+            _mapper = mapper;
+            _linkGenerator = linkGenerator;
         }
 
         [HttpGet]

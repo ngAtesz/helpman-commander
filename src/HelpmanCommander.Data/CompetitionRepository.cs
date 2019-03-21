@@ -68,5 +68,25 @@ namespace HelpmanCommander.Data
 
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<Station[]> GetStationsByCompetitionAsync(int competitionId)
+        {
+            _logger.LogInformation($"Getting all station for a competition");
+
+            IQueryable<Station> query = _context.Stations.Where(s => s.CompetitionId == competitionId);
+
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Station> GetStationAsync(int id)
+        {
+            _logger.LogInformation($"Getting a concrete station");
+
+            IQueryable<Station> query = _context.Stations;
+            
+            query = query.Where(s => s.Id == id);
+
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }
