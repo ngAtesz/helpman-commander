@@ -69,7 +69,7 @@ namespace HelpmanCommander.Data
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Station[]> GetStationsByCompetitionAsync(int competitionId)
+        public async Task<Station[]> GetAllStationByCompetitionAsync(int competitionId)
         {
             _logger.LogInformation($"Getting all station for a competition");
 
@@ -78,11 +78,11 @@ namespace HelpmanCommander.Data
             return await query.ToArrayAsync();
         }
 
-        public async Task<Station> GetStationAsync(int id)
+        public async Task<Station> GetStationByIdAsync(int competitionId, int id)
         {
             _logger.LogInformation($"Getting a concrete station");
 
-            IQueryable<Station> query = _context.Stations;
+            IQueryable<Station> query = _context.Stations.Where(s => s.CompetitionId == competitionId);
             
             query = query.Where(s => s.Id == id);
 

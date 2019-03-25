@@ -85,13 +85,13 @@ namespace HelpmanCommander.API.Controllers
             try
             {
                 var competition = await _repository.GetCompetitionAsync(id);
-                if (competition == null) return NotFound();
+                if (competition == null) return NotFound("Copmetition not found.");
 
                 _mapper.Map(model, competition, opt => opt.AfterMap((from, to) => { to.Id = id; }));
 
                 if (await _repository.SaveChangesAsync())
                 {
-                    return Ok(competition);
+                    return Ok(_mapper.Map<CompetitionModel>(competition));
                 }
                 return StatusCode(StatusCodes.Status500InternalServerError, "Competition couldn't be updated.");
             }
@@ -102,7 +102,7 @@ namespace HelpmanCommander.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<CompetitionModel>> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
