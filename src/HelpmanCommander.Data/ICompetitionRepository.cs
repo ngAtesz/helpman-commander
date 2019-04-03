@@ -1,5 +1,6 @@
 ﻿using HelpmanCommander.Data.Entities;
 using System.Threading.Tasks;
+using Task = HelpmanCommander.Data.Entities.Task;
 
 namespace HelpmanCommander.Data
 {
@@ -17,5 +18,9 @@ namespace HelpmanCommander.Data
         //Stations
         Task<Station[]> GetAllStationByCompetitionAsync(int competitionId);
         Task<Station> GetStationByIdAsync(int competitionId, int stationId);
+
+        //Tasks
+        Task<Task[]> GetAllTasksAsync(int? exerciseId = 0);
+        Task<Task> GetTaskByIdAsync(int taskId);
     }
 }
