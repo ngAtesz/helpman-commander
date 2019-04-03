@@ -82,9 +82,14 @@ namespace HelpmanCommander.Data
         {
             _logger.LogInformation($"Getting a concrete station");
 
-            IQueryable<Station> query = _context.Stations.Where(s => s.CompetitionId == competitionId);
+            IQueryable<Station> query = _context.Stations
+                                                .Include(s => s.Exercises)
+                                                    .ThenInclude(e => e.Tasks)
+                                                        .ThenInclude(et => et.Task);
             
-            query = query.Where(s => s.Id == id);
+            query = query.Where(s => s.Id == id
+                                    && s.CompetitionId == competitionId);
+
 
             return await query.FirstOrDefaultAsync();
         }

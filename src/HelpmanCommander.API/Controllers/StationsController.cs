@@ -7,8 +7,6 @@ using HelpmanCommander.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Task = System.Threading.Tasks.Task;
-
 
 namespace HelpmanCommander.API.Controllers
 {
@@ -47,7 +45,7 @@ namespace HelpmanCommander.API.Controllers
             try
             {
                 var result = await _repository.GetStationByIdAsync(competitionId, id);
-                if (result == null) return NotFound("Competition not found.");
+                if (result == null) return NotFound("Station not found.");
 
                 return Ok(_mapper.Map<StationModel>(result));
             }

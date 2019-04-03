@@ -1,4 +1,5 @@
-﻿using HelpmanCommander.Data.Entities;
+﻿using System;
+using HelpmanCommander.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,6 +40,14 @@ namespace HelpmanCommander.Data
                 .HasOne(et => et.Task)
                 .WithMany(t => t.Exercises)
                 .HasForeignKey(et => et.TaskId);
+
+            SeedData(builder);
+        }
+
+        private void SeedData(ModelBuilder builder)
+        {
+            // TODO: create data seed for every entity
+            // https://dzone.com/articles/quick-tip-seeding-large-data-in-entity-framework-c
         }
     }
 }
