@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HelpmanCommander.Data.Entities
 {
@@ -13,6 +14,11 @@ namespace HelpmanCommander.Data.Entities
 
         [MaxLength(1000)]
         public string Description { get; set; }
+
+        public int StationId { get; set; }
+
+        [ForeignKey(nameof(StationId))]
+        public Station Station { get; set; }
 
         public virtual ICollection<ExerciseTask> Tasks { get; set; }
     }

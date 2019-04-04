@@ -1,5 +1,6 @@
 ﻿namespace HelpmanCommander.API.Models
 {
+    //TODO: do we need separated ExerciseTaskModel? issue is the Score-DefaultScore
     public class TaskModel
     {
         public int Id { get; set; }

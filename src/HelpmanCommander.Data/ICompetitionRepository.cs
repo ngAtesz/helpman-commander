@@ -17,10 +17,15 @@ namespace HelpmanCommander.Data
         
         //Stations
         Task<Station[]> GetAllStationByCompetitionAsync(int competitionId);
+        //TODO: Investigate skip competitionId from repository QueryById methods
         Task<Station> GetStationByIdAsync(int competitionId, int stationId);
 
         //Tasks
         Task<Task[]> GetAllTasksAsync();
         Task<Task> GetTaskByIdAsync(int taskId);
+        
+        //Exercises
+        Task<Exercise[]> GetAllExerciseByStationAsync(int competitionId, int stationId);
+        Task<Exercise> GetExerciseByIdAsync(int exerciseId);
     }
 }

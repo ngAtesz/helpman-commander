@@ -18,7 +18,9 @@ namespace HelpmanCommander.API.Controllers
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
 
-        public StationsController(ICompetitionRepository repository, IMapper mapper, LinkGenerator linkGenerator)
+        public StationsController(ICompetitionRepository repository,
+                                    IMapper mapper,
+                                    LinkGenerator linkGenerator)
         {
             _repository = repository;
             _mapper = mapper;
@@ -44,6 +46,9 @@ namespace HelpmanCommander.API.Controllers
         {
             try
             {
+                var competition = await _repository.GetCompetitionAsync(competitionId);
+                if (competition == null) return BadRequest("Competition does not exist.");
+
                 var result = await _repository.GetStationByIdAsync(competitionId, id);
                 if (result == null) return NotFound("Station not found.");
 
@@ -61,10 +66,7 @@ namespace HelpmanCommander.API.Controllers
             try
             {
                 var competition = await _repository.GetCompetitionAsync(competitionId);
-                if (competition == null)
-                {
-                    return BadRequest("Competition does not exist.");
-                }
+                if (competition == null) return BadRequest("Competition does not exist.");
 
                 var station = _mapper.Map<Station>(model);
                 station.Competition = competition;

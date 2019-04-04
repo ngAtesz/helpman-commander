@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using HelpmanCommander.API.Models;
@@ -9,8 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Task = HelpmanCommander.Data.Entities.Task;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HelpmanCommander.API.Controllers
 {
@@ -29,7 +25,6 @@ namespace HelpmanCommander.API.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        // GET: api/<controller>
         [HttpGet()]
         public async Task<ActionResult<TaskModel[]>> Get()
         {
@@ -44,7 +39,6 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
-        // GET api/<controller>/5
         [HttpGet("{id:int}")]
         public async Task<ActionResult<TaskModel>> Get(int id)
         {
@@ -61,7 +55,6 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
-        // POST api/<controller>
         [HttpPost]
         public async Task<ActionResult<TaskModel>> Post(TaskModel model)
         {
@@ -84,7 +77,6 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
-        // PUT api/<controller>/5
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(TaskModel model, int id)
         {
@@ -113,7 +105,6 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
-        // DELETE api/<controller>/5
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

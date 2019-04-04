@@ -107,5 +107,18 @@ namespace HelpmanCommander.Data
 
             return await task.FirstOrDefaultAsync();
         }
+
+        public async Task<Exercise[]> GetAllExerciseByStationAsync(int competitionId, int stationId)
+        {
+            var station = await GetStationByIdAsync(competitionId, stationId);
+            return station.Exercises.ToArray();
+        }
+
+        public Task<Exercise> GetExerciseByIdAsync(int exerciseId)
+        {
+            var exercise = _context.Exercises.Where(e => e.Id == exerciseId);
+
+            return exercise.FirstOrDefaultAsync();
+        }
     }
 }

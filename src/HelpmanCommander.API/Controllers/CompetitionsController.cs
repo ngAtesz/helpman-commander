@@ -7,7 +7,6 @@ using HelpmanCommander.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Task = System.Threading.Tasks.Task;
 
 namespace HelpmanCommander.API.Controllers
 {
