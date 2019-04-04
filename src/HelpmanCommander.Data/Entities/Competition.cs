@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,10 @@ namespace HelpmanCommander.Data.Entities
         public string Location { get; set; }
         
         public DateTime? DateOfEvent { get; set; }
+
+        [Required]
+        [DefaultValue(false)]
+        public bool Finalized { get; set; } = false;
 
         [Required]
         public string OwnerId { get; set; }

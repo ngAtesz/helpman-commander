@@ -22,7 +22,7 @@ namespace HelpmanCommander.Data
             base.OnModelCreating(builder);
 
             builder.Entity<Task>()
-                .Property(t => t.IsDefaultTask)
+                .Property(t => t.IsDefault)
                 .HasDefaultValue(false);
 
             builder.Entity<Task>()

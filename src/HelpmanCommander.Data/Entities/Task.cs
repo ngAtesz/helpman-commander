@@ -14,7 +14,7 @@ namespace HelpmanCommander.Data.Entities
 
         public ushort DefaultScore { get; set; }
 
-        public bool IsDefaultTask { get; set; }
+        public bool IsDefault { get; set; }
 
         public int? PrerequisiteTaskId { get; set; }
 
