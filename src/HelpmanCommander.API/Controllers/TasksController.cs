@@ -30,12 +30,12 @@ namespace HelpmanCommander.API.Controllers
         }
 
         // GET: api/<controller>
-        [HttpGet("{exerciseId:int?}")]
-        public async Task<ActionResult<TaskModel[]>> Get(int? exerciseId)
+        [HttpGet()]
+        public async Task<ActionResult<TaskModel[]>> Get()
         {
             try
             {
-                var tasks = await _repository.GetAllTasksAsync(exerciseId);
+                var tasks = await _repository.GetAllTasksAsync();
                 return Ok(_mapper.Map<TaskModel[]>(tasks));
             }
             catch (Exception e)
@@ -45,28 +45,97 @@ namespace HelpmanCommander.API.Controllers
         }
 
         // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<TaskModel>> Get(int id)
         {
-            return "value";
+            try
+            {
+                var task = await _repository.GetTaskByIdAsync(id);
+                if (task == null) return NotFound("Task not found.");
+
+                return Ok(_mapper.Map<TaskModel>(task));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure.");
+            }
         }
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<ActionResult<TaskModel>> Post(TaskModel model)
         {
+            try
+            {
+                var task = _mapper.Map<Task>(model);
+                _repository.Add(task);
+
+                if (await _repository.SaveChangesAsync())
+                {
+                    var location = _linkGenerator.GetPathByAction("Get", "Tasks", new { id = task.Id });
+                    return Created(location, _mapper.Map<TaskModel>(task));
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Task couldn't be saved.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
+            }
         }
 
         // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(TaskModel model, int id)
         {
+            try
+            {
+                var task = await _repository.GetTaskByIdAsync(id);
+                if (task == null) return NotFound("Task not found.");
+
+                _mapper.Map(model, task, opt => opt.AfterMap((from, to) =>
+                                                            {
+                                                                to.Id = id;
+                                                                to.PrerequisiteTask = null;
+                                                            }));
+
+                if (await _repository.SaveChangesAsync())
+                {
+                    return Ok(_mapper.Map<TaskModel>(task));
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Task couldn't be updated.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure.");
+            }
         }
 
         // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
+            try
+            {
+                var task = await _repository.GetTaskByIdAsync(id);
+                if (task == null) return NotFound("Task not found");
+
+                _repository.Delete(task);
+
+                if (await _repository.SaveChangesAsync())
+                {
+                    return NoContent();
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Task couldn't be deleted.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure.");
+            }
         }
     }
 }

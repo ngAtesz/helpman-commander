@@ -18,7 +18,7 @@ namespace HelpmanCommander.API
             
             CreateMap<ExerciseTask, TaskModel>()
                 .ForMember(tm => tm.DefaultScore, opt => opt.MapFrom(et => et.Task.DefaultScore))
-                .ForMember(tm => tm.IsDefault, opt => opt.MapFrom(et => et.Task.IsDefaultTask))
+                .ForMember(tm => tm.IsDefault, opt => opt.MapFrom(et => et.Task.IsDefault))
                 .ForMember(tm => tm.Name, opt => opt.MapFrom(et => et.Task.Name))
                 .ForMember(tm => tm.PrerequisiteTaskId, opt => opt.MapFrom(et => et.Task.PrerequisiteTaskId))
                 .ReverseMap();

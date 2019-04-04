@@ -20,7 +20,7 @@ namespace HelpmanCommander.Data
         Task<Station> GetStationByIdAsync(int competitionId, int stationId);
 
         //Tasks
-        Task<Task[]> GetAllTasksAsync(int? exerciseId = 0);
+        Task<Task[]> GetAllTasksAsync();
         Task<Task> GetTaskByIdAsync(int taskId);
     }
 }

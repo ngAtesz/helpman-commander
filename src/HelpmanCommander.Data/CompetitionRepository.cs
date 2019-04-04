@@ -94,22 +94,11 @@ namespace HelpmanCommander.Data
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Entities.Task[]> GetAllTasksAsync(int? exerciseId)
+        public async Task<Entities.Task[]> GetAllTasksAsync()
         {
             _logger.LogInformation($"Getting a concrete station");
 
-            IQueryable<Entities.Task> query = _context.Tasks;
-
-            if (exerciseId.HasValue)
-            {
-                query = _context.Exercises
-                                .Where(e => e.Id == exerciseId)
-                                .Include(e =>e.Tasks)
-                                    .ThenInclude(et => et.Task)
-                                .SelectMany(e => e.Tasks.Select(et =>et.Task));
-            }
-
-            return await query.ToArrayAsync();
+            return await _context.Tasks.ToArrayAsync();
         }
 
         public async Task<Entities.Task> GetTaskByIdAsync(int taskId)

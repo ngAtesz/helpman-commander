@@ -125,7 +125,7 @@ namespace HelpmanCommander.API.Controllers
                     return NoContent();
                 }
 
-                return StatusCode(StatusCodes.Status500InternalServerError, "Station couldn't be deleted");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Station couldn't be deleted.");
             }
             catch (Exception e)
             {
