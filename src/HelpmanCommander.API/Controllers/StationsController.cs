@@ -79,10 +79,8 @@ namespace HelpmanCommander.API.Controllers
                                                             values: new { competitionId, id = station.Id });
                     return Created(url, _mapper.Map<StationModel>(station));
                 }
-                else
-                {
-                    return BadRequest("Failed to save station.");
-                }
+
+                return BadRequest("Failed to save station.");
             }
             catch (Exception e)
             {
