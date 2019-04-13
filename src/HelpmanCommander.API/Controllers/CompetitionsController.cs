@@ -27,6 +27,10 @@ namespace HelpmanCommander.API.Controllers
             _linkGenerator = linkGenerator;
         }
 
+        /// <summary>
+        /// List all competition.
+        /// </summary>
+        /// <returns>Array of CompetitionModel</returns>
         [HttpGet]
         public async Task<ActionResult<CompetitionModel[]>> Get()
         {

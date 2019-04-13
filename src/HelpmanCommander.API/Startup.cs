@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -10,6 +12,7 @@ using HelpmanCommander.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System.IO;
 
 namespace HelpmanCommander.API
 {
@@ -51,8 +54,20 @@ namespace HelpmanCommander.API
                 setupACtion.SwaggerDoc(Configuration.GetValue<string>("OpenApi:Name", "DefaulApiName"), new OpenApiInfo()
                 {
                     Title = Configuration.GetValue<string>("OpenApi:DisplayName", "API name missing from configuration"),
-                    Version = Configuration.GetValue<string>("OpenApi:Version")
+                    Version = Configuration.GetValue<string>("OpenApi:Version"),
+                    Description = Configuration.GetValue<string>("OpenApi:Description", "Description is missing from configuration"),
+                    Contact = new OpenApiContact()
+                    {
+                        Email = Configuration.GetValue<string>("Contact:Email"),
+                        Name = Configuration.GetValue<string>("Contact:Name"),
+                        Url = new Uri(Configuration.GetValue<string>("Contact:Url"))
+                    }
                 });
+
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+                setupACtion.IncludeXmlComments(xmlCommentsFullPath);
             });
 
             services.AddRouting(options =>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HelpmanCommander.API</name>
+    </assembly>
+    <members>
+        <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Get">
+            <summary>
+            List all competition.
+            </summary>
+            <returns>Array of CompetitionModel</returns>
+        </member>
+    </members>
+</doc>
