@@ -9,11 +9,14 @@ using Microsoft.EntityFrameworkCore;
 using HelpmanCommander.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace HelpmanCommander.API
 {
     public class Startup
     {
+        private const string OpenApiName = "HelpManCommanderOpenAPISpecification";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,18 +35,28 @@ namespace HelpmanCommander.API
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                                                        options.UseSqlServer(
+                                                            Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ICompetitionRepository, CompetitionRepository>();
 
             services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddDefaultUI(UIFramework.Bootstrap4)
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAutoMapper();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSwaggerGen(setupACtion =>
+            {
+                setupACtion.SwaggerDoc(Configuration.GetValue<string>("OpenApi:Name", "DefaulApiName"), new OpenApiInfo()
+                {
+                    Title = Configuration.GetValue<string>("OpenApi:DisplayName", "API name missing from configuration"),
+                    Version = Configuration.GetValue<string>("OpenApi:Version")
+                });
+            });
+
+            services.AddMvc()
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +75,19 @@ namespace HelpmanCommander.API
             }
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
+
+            var swaggerUrl = Configuration.GetValue<string>("OpenApi:Url", "n/a");
+            var apiName = Configuration.GetValue<string>("OpenApi:DisplayName", "API name missing from configuration");
+            
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint(
+                    swaggerUrl,
+                    apiName);
+                setupAction.RoutePrefix = "";
+            });
+
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
