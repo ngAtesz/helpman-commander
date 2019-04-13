@@ -55,6 +55,12 @@ namespace HelpmanCommander.API
                 });
             });
 
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+            });
+
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -79,7 +85,7 @@ namespace HelpmanCommander.API
 
             var swaggerUrl = Configuration.GetValue<string>("OpenApi:Url", "n/a");
             var apiName = Configuration.GetValue<string>("OpenApi:DisplayName", "API name missing from configuration");
-            
+
             app.UseSwaggerUI(setupAction =>
             {
                 setupAction.SwaggerEndpoint(
