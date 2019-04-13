@@ -4,11 +4,46 @@
         <name>HelpmanCommander.API</name>
     </assembly>
     <members>
+        <member name="T:HelpmanCommander.API.Controllers.CompetitionsController">
+            <summary>
+            Everything about competitions.
+            </summary>
+        </member>
         <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Get">
             <summary>
             List all competition.
             </summary>
-            <returns>Array of CompetitionModel</returns>
+            <returns>An Action result of CompetitionModel array.</returns>
+            <response code="200">Returns all competition in an array.</response>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Get(System.Int32)">
+            <summary>
+            Find competition by id.
+            </summary>
+            <param name="id">The id of competition to return.</param>
+            <returns>ActionResult of CompetitionModel</returns>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Post(HelpmanCommander.API.Models.CompetitionModel)">
+            <summary>
+            Add a new competition.
+            </summary>
+            <param name="model">CompetitionModel object needs to be added.</param>
+            <returns>ACtionResult of the newly created CompetitionModel.</returns>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Put(HelpmanCommander.API.Models.CompetitionModel,System.Int32)">
+            <summary>
+            Update an existing competition
+            </summary>
+            <param name="model">CompetitionModel object that needs to be updated.</param>
+            <param name="id">Id of competition.</param>
+            <returns>ActionResult of modified CompetitionModel</returns>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Delete(System.Int32)">
+            <summary>
+            Deletes a competition.
+            </summary>
+            <param name="id">Competition id to delete.</param>
+            <returns>IActionResult</returns>
         </member>
     </members>
 </doc>

@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Routing;
 
 namespace HelpmanCommander.API.Controllers
 {
+    /// <summary>
+    /// Everything about competitions.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CompetitionsController : ControllerBase
@@ -30,7 +33,9 @@ namespace HelpmanCommander.API.Controllers
         /// <summary>
         /// List all competition.
         /// </summary>
-        /// <returns>Array of CompetitionModel</returns>
+        /// <returns>An Action result of CompetitionModel array.</returns>
+        /// <response code="200">Returns all competition in an array.</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<CompetitionModel[]>> Get()
         {
@@ -45,6 +50,13 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Find competition by id.
+        /// </summary>
+        /// <param name="id">The id of competition to return.</param>
+        /// <returns>ActionResult of CompetitionModel</returns>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<CompetitionModel>> Get(int id)
         {
@@ -53,7 +65,7 @@ namespace HelpmanCommander.API.Controllers
                 var result = await _repository.GetCompetitionAsync(id, true);
                 if (result == null) return NotFound("Competition not found.");
 
-                return _mapper.Map<CompetitionModel>(result);
+                return Ok(_mapper.Map<CompetitionModel>(result));
             }
             catch (Exception)
             {
@@ -61,6 +73,13 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Add a new competition.
+        /// </summary>
+        /// <param name="model">CompetitionModel object needs to be added.</param>
+        /// <returns>ACtionResult of the newly created CompetitionModel.</returns>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<CompetitionModel>> Post(CompetitionModel model)
         {
@@ -82,6 +101,15 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update an existing competition
+        /// </summary>
+        /// <param name="model">CompetitionModel object that needs to be updated.</param>
+        /// <param name="id">Id of competition.</param>
+        /// <returns>ActionResult of modified CompetitionModel</returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(CompetitionModel model, int id)
         {
@@ -104,6 +132,13 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a competition.
+        /// </summary>
+        /// <param name="id">Competition id to delete.</param>
+        /// <returns>IActionResult</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

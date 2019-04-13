@@ -67,7 +67,7 @@ namespace HelpmanCommander.API
                 var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
 
-                setupACtion.IncludeXmlComments(xmlCommentsFullPath);
+                setupACtion.IncludeXmlComments(xmlCommentsFullPath, true);
             });
 
             services.AddRouting(options =>
