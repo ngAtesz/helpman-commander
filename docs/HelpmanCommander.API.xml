@@ -6,8 +6,17 @@
     <members>
         <member name="T:HelpmanCommander.API.Controllers.CompetitionsController">
             <summary>
-            Everything about competitions.
+            Managing competitions.
             </summary>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.#ctor(HelpmanCommander.Data.ICompetitionRepository,AutoMapper.IMapper,Microsoft.AspNetCore.Routing.LinkGenerator)">
+            <summary>
+            Initilizes a new instance of the <see cref="T:HelpmanCommander.API.Controllers.CompetitionsController" /> class
+            with ICompetitionRepository, AutoMapper and LinkGenerator.
+            </summary>
+            <param name="repository"></param>
+            <param name="mapper"></param>
+            <param name="linkGenerator"></param>
         </member>
         <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Get">
             <summary>
@@ -21,7 +30,7 @@
             Find competition by id.
             </summary>
             <param name="id">The id of competition to return.</param>
-            <returns>ActionResult of CompetitionModel</returns>
+            <returns>Returns a single CompetitionModel</returns>
         </member>
         <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Post(HelpmanCommander.API.Models.CompetitionModel)">
             <summary>
@@ -34,16 +43,75 @@
             <summary>
             Update an existing competition
             </summary>
-            <param name="model">CompetitionModel object that needs to be updated.</param>
-            <param name="id">Id of competition.</param>
-            <returns>ActionResult of modified CompetitionModel</returns>
+            <param name="model">Updated competition model.</param>
+            <param name="id">Id of competition that needs to be updated.</param>
+            <returns>Updated competition.</returns>
         </member>
         <member name="M:HelpmanCommander.API.Controllers.CompetitionsController.Delete(System.Int32)">
             <summary>
             Deletes a competition.
             </summary>
             <param name="id">Competition id to delete.</param>
-            <returns>IActionResult</returns>
+            <returns>No content in case of success.</returns>
+        </member>
+        <member name="T:HelpmanCommander.API.Controllers.StationsController">
+            <summary>
+            Managing stations which is a sub entity of a competition. A competition is made up of multiple stations.
+            </summary>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.StationsController.#ctor(HelpmanCommander.Data.ICompetitionRepository,AutoMapper.IMapper,Microsoft.AspNetCore.Routing.LinkGenerator)">
+            <summary>
+            Initilizes a new instance of the <see cref="T:HelpmanCommander.API.Controllers.StationsController" /> class
+            with ICompetitionRepository, AutoMapper and LinkGenerator.
+            </summary>
+            <param name="repository">ICompetitionRepository</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="linkGenerator">LinkGenerator</param>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.StationsController.Get(System.Int32)">
+            <summary>
+            List all station for a competition.
+            </summary>
+            <param name="competitionId">The id of competition</param>
+            <returns>Returns all station in an array. </returns>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.StationsController.Get(System.Int32,System.Int32)">
+            <summary>
+            Find a station in a competition by stationId.
+            </summary>
+            <param name="competitionId">The id of competition.</param>
+            <param name="id">The id of station to return.</param>
+            <returns>Returns a single StationModel</returns>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.StationsController.Post(System.Int32,HelpmanCommander.API.Models.StationModel)">
+            <summary>
+            Add a new station to a competition.
+            </summary>
+            <param name="competitionId">The id of competition which will be extended with new station.</param>
+            <param name="model">StationModel object that needs to be added to the competition.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.StationsController.Put(System.Int32,HelpmanCommander.API.Models.StationModel,System.Int32)">
+            <summary>
+            Update an existing station in a competition.
+            </summary>
+            <param name="competitionId">The id of competition where the station belongs to.</param>
+            <param name="model">Updated station model.</param>
+            <param name="id">ID of the station that needs to be updated.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HelpmanCommander.API.Controllers.StationsController.Delete(System.Int32,System.Int32)">
+            <summary>
+            Deletes a station in a competition.
+            </summary>
+            <param name="competitionId">The id of competition where the station belongs to.</param>
+            <param name="id">The id of the station that needs to be deleted.</param>
+            <returns>No content in case of success.</returns>
+        </member>
+        <member name="T:HelpmanCommander.API.Controllers.TasksController">
+            <summary>
+            Managing individual tasks which can be assigned to exercises.
+            </summary>
         </member>
     </members>
 </doc>

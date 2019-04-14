@@ -11,16 +11,23 @@ using Microsoft.AspNetCore.Routing;
 namespace HelpmanCommander.API.Controllers
 {
     /// <summary>
-    /// Everything about competitions.
+    /// Managing competitions.
     /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class CompetitionsController : ControllerBase
     {
         private readonly ICompetitionRepository _repository;
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
 
+        /// <summary>
+        /// Initilizes a new instance of the <see cref="CompetitionsController" /> class
+        /// with ICompetitionRepository, AutoMapper and LinkGenerator.
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="mapper"></param>
+        /// <param name="linkGenerator"></param>
         public CompetitionsController(ICompetitionRepository repository,
                                         IMapper mapper,
                                         LinkGenerator linkGenerator)
@@ -35,7 +42,8 @@ namespace HelpmanCommander.API.Controllers
         /// </summary>
         /// <returns>An Action result of CompetitionModel array.</returns>
         /// <response code="200">Returns all competition in an array.</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ActionResult<CompetitionModel[]>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<ActionResult<CompetitionModel[]>> Get()
         {
@@ -54,7 +62,7 @@ namespace HelpmanCommander.API.Controllers
         /// Find competition by id.
         /// </summary>
         /// <param name="id">The id of competition to return.</param>
-        /// <returns>ActionResult of CompetitionModel</returns>
+        /// <returns>Returns a single CompetitionModel</returns>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id:int}")]
@@ -80,6 +88,7 @@ namespace HelpmanCommander.API.Controllers
         /// <returns>ACtionResult of the newly created CompetitionModel.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
         public async Task<ActionResult<CompetitionModel>> Post(CompetitionModel model)
         {
@@ -104,12 +113,13 @@ namespace HelpmanCommander.API.Controllers
         /// <summary>
         /// Update an existing competition
         /// </summary>
-        /// <param name="model">CompetitionModel object that needs to be updated.</param>
-        /// <param name="id">Id of competition.</param>
-        /// <returns>ActionResult of modified CompetitionModel</returns>
+        /// <param name="model">Updated competition model.</param>
+        /// <param name="id">Id of competition that needs to be updated.</param>
+        /// <returns>Updated competition.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(CompetitionModel model, int id)
         {
@@ -136,9 +146,10 @@ namespace HelpmanCommander.API.Controllers
         /// Deletes a competition.
         /// </summary>
         /// <param name="id">Competition id to delete.</param>
-        /// <returns>IActionResult</returns>
+        /// <returns>No content in case of success.</returns>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
