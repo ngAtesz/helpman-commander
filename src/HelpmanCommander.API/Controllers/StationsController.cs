@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Routing;
 namespace HelpmanCommander.API.Controllers
 {
     /// <summary>
-    /// Managing stations which is a sub entity of a competition. A competition is made up of multiple stations.
+    /// Managing stations which is a sub-entity of a competition. A competition is made up of multiple stations.
     /// </summary>
     [Route("api/competitions/{competitionId}/[controller]")]
     [ApiController]
@@ -91,8 +91,8 @@ namespace HelpmanCommander.API.Controllers
         /// Add a new station to a competition.
         /// </summary>
         /// <param name="competitionId">The id of competition which will be extended with new station.</param>
-        /// <param name="model">StationModel object that needs to be added to the competition.</param>
-        /// <returns></returns>
+        /// <param name="model"><see cref="StationModel"/> object that needs to be added to the competition.</param>
+        /// <returns>Created <see cref="StationModel"/>.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -125,7 +125,7 @@ namespace HelpmanCommander.API.Controllers
         }
 
         /// <summary>
-        /// Update an existing station in a competition.
+        /// Update an existing station of a competition.
         /// </summary>
         /// <param name="competitionId">The id of competition where the station belongs to.</param>
         /// <param name="model">Updated station model.</param>

@@ -40,9 +40,9 @@ namespace HelpmanCommander.API.Controllers
         /// <summary>
         /// List all competition.
         /// </summary>
-        /// <returns>An Action result of CompetitionModel array.</returns>
+        /// <returns>Array of <see cref="CompetitionModel"/>.</returns>
         /// <response code="200">Returns all competition in an array.</response>
-        [ProducesResponseType(typeof(ActionResult<CompetitionModel[]>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CompetitionModel[]), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<ActionResult<CompetitionModel[]>> Get()
@@ -62,9 +62,10 @@ namespace HelpmanCommander.API.Controllers
         /// Find competition by id.
         /// </summary>
         /// <param name="id">The id of competition to return.</param>
-        /// <returns>Returns a single CompetitionModel</returns>
+        /// <returns>Returns a single <see cref="CompetitionModel"/></returns>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<CompetitionModel>> Get(int id)
         {
@@ -85,7 +86,7 @@ namespace HelpmanCommander.API.Controllers
         /// Add a new competition.
         /// </summary>
         /// <param name="model">CompetitionModel object needs to be added.</param>
-        /// <returns>ACtionResult of the newly created CompetitionModel.</returns>
+        /// <returns>Created <see cref="CompetitionModel"/>.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -115,7 +116,7 @@ namespace HelpmanCommander.API.Controllers
         /// </summary>
         /// <param name="model">Updated competition model.</param>
         /// <param name="id">Id of competition that needs to be updated.</param>
-        /// <returns>Updated competition.</returns>
+        /// <returns>Updated <see cref="CompetitionModel"/>.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
