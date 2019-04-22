@@ -13,8 +13,8 @@ namespace HelpmanCommander.API.Controllers
     /// <summary>
     /// Managing competitions.
     /// </summary>
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class CompetitionsController : ControllerBase
     {
         private readonly ICompetitionRepository _repository;
