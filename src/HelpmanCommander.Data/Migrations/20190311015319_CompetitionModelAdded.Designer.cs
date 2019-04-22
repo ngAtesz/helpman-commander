@@ -4,14 +4,16 @@ using HelpmanCommander.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HelpmanCommander.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190311015319_CompetitionModelAdded")]
+    partial class CompetitionModelAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,8 +28,6 @@ namespace HelpmanCommander.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("DateOfEvent");
-
-                    b.Property<bool>("Finalized");
 
                     b.Property<string>("Location")
                         .HasMaxLength(100);
@@ -59,7 +59,7 @@ namespace HelpmanCommander.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<int?>("StationId");
+                    b.Property<int>("StationId");
 
                     b.HasKey("Id");
 
@@ -115,7 +115,7 @@ namespace HelpmanCommander.Data.Migrations
 
                     b.Property<int>("DefaultScore");
 
-                    b.Property<bool>("IsDefault")
+                    b.Property<bool>("IsDefaultTask")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(false);
 
@@ -307,9 +307,10 @@ namespace HelpmanCommander.Data.Migrations
 
             modelBuilder.Entity("HelpmanCommander.Data.Entities.Exercise", b =>
                 {
-                    b.HasOne("HelpmanCommander.Data.Entities.Station")
+                    b.HasOne("HelpmanCommander.Data.Entities.Station", "Station")
                         .WithMany("Exercises")
-                        .HasForeignKey("StationId");
+                        .HasForeignKey("StationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HelpmanCommander.Data.Entities.ExerciseTask", b =>

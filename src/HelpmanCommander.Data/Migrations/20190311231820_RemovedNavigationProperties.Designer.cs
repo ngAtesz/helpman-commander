@@ -4,14 +4,16 @@ using HelpmanCommander.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HelpmanCommander.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190311231820_RemovedNavigationProperties")]
+    partial class RemovedNavigationProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,8 +28,6 @@ namespace HelpmanCommander.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("DateOfEvent");
-
-                    b.Property<bool>("Finalized");
 
                     b.Property<string>("Location")
                         .HasMaxLength(100);
@@ -89,7 +89,7 @@ namespace HelpmanCommander.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CompetitionId");
+                    b.Property<int?>("CompetitionId");
 
                     b.Property<string>("Description")
                         .HasMaxLength(1000);
@@ -115,7 +115,7 @@ namespace HelpmanCommander.Data.Migrations
 
                     b.Property<int>("DefaultScore");
 
-                    b.Property<bool>("IsDefault")
+                    b.Property<bool>("IsDefaultTask")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(false);
 
@@ -327,10 +327,9 @@ namespace HelpmanCommander.Data.Migrations
 
             modelBuilder.Entity("HelpmanCommander.Data.Entities.Station", b =>
                 {
-                    b.HasOne("HelpmanCommander.Data.Entities.Competition", "Competition")
+                    b.HasOne("HelpmanCommander.Data.Entities.Competition")
                         .WithMany("Stations")
-                        .HasForeignKey("CompetitionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CompetitionId");
                 });
 
             modelBuilder.Entity("HelpmanCommander.Data.Entities.Task", b =>
