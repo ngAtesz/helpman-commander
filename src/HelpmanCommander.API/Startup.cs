@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using HelpmanCommander.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Linq;
 
 namespace HelpmanCommander.API
 {
@@ -43,7 +45,29 @@ namespace HelpmanCommander.API
 
             services.AddAutoMapper();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(setupAction =>
+            {
+                setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+                setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
+                setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+
+                setupAction.ReturnHttpNotAcceptable = true;
+
+                var jsonOutputFormatter = setupAction.OutputFormatters
+                                                    .OfType<JsonOutputFormatter>()
+                                                    .FirstOrDefault();
+
+                if (jsonOutputFormatter != null)
+                {
+                    // remove text/json as it isn't the approved media type
+                    // for working with JSON at API level
+                    if (jsonOutputFormatter.SupportedMediaTypes.Contains("text/json"))
+                    {
+                        jsonOutputFormatter.SupportedMediaTypes.Remove("text/json");
+                    }
+                }
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
