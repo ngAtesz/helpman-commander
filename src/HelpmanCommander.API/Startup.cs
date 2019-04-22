@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Linq;
 
 namespace HelpmanCommander.API
 {
@@ -76,8 +78,29 @@ namespace HelpmanCommander.API
                 options.LowercaseQueryStrings = true;
             });
 
-            services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(setupAction =>
+            {
+                setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+                setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
+                setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+
+                setupAction.ReturnHttpNotAcceptable = true;
+
+                var jsonOutputFormatter = setupAction.OutputFormatters
+                                                    .OfType<JsonOutputFormatter>()
+                                                    .FirstOrDefault();
+
+                if (jsonOutputFormatter != null)
+                {
+                    // remove text/json as it isn't the approved media type
+                    // for working with JSON at API level
+                    if (jsonOutputFormatter.SupportedMediaTypes.Contains("text/json"))
+                    {
+                        jsonOutputFormatter.SupportedMediaTypes.Remove("text/json");
+                    }
+                }
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +113,14 @@ namespace HelpmanCommander.API
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
+                    });
+                });
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
