@@ -1,27 +1,25 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
-using HelpmanCommander.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using System.IO;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using System.Linq;
+using AutoMapper;
+using HelpmanCommander.Data;
 
 namespace HelpmanCommander.API
 {
     public class Startup
     {
-        private const string OpenApiName = "HelpManCommanderOpenAPISpecification";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -53,16 +51,16 @@ namespace HelpmanCommander.API
 
             services.AddSwaggerGen(setupACtion =>
             {
-                setupACtion.SwaggerDoc(Configuration.GetValue<string>("OpenApi:Name", "DefaulApiName"), new OpenApiInfo()
+                setupACtion.SwaggerDoc(Configuration["OpenApi:Name"], new OpenApiInfo()
                 {
-                    Title = Configuration.GetValue<string>("OpenApi:DisplayName", "API name missing from configuration"),
-                    Version = Configuration.GetValue<string>("OpenApi:Version"),
-                    Description = Configuration.GetValue<string>("OpenApi:Description", "Description is missing from configuration"),
+                    Title = Configuration["OpenApi:DisplayName"],
+                    Version = Configuration["OpenApi:Version"],
+                    Description = Configuration["OpenApi:Description"],
                     Contact = new OpenApiContact()
                     {
-                        Email = Configuration.GetValue<string>("Contact:Email"),
-                        Name = Configuration.GetValue<string>("Contact:Name"),
-                        Url = new Uri(Configuration.GetValue<string>("Contact:Url"))
+                        Email = Configuration["Contact:Email"],
+                        Name = Configuration["Contact:Name"],
+                        Url = new Uri(Configuration["Contact:Url"])
                     }
                 });
 
@@ -83,6 +81,9 @@ namespace HelpmanCommander.API
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+                setupAction.Filters.Add(new ProducesDefaultResponseTypeAttribute());
+                setupAction.Filters.Add(new ProducesAttribute("application/json"));
+                setupAction.Filters.Add(new ConsumesAttribute("application/json"));
 
                 setupAction.ReturnHttpNotAcceptable = true;
 
@@ -128,8 +129,8 @@ namespace HelpmanCommander.API
             app.UseHttpsRedirection();
             app.UseSwagger();
 
-            var swaggerUrl = Configuration.GetValue<string>("OpenApi:Url", "n/a");
-            var apiName = Configuration.GetValue<string>("OpenApi:DisplayName", "API name missing from configuration");
+            var swaggerUrl = Configuration["OpenApi:Url"];
+            var apiName = Configuration["OpenApi:DisplayName"];
 
             app.UseSwaggerUI(setupAction =>
             {
@@ -144,12 +145,7 @@ namespace HelpmanCommander.API
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc();
         }
     }
 }
