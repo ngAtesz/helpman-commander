@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -9,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using HelpmanCommander.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using System.IO;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Linq;
 
@@ -16,6 +20,8 @@ namespace HelpmanCommander.API
 {
     public class Startup
     {
+        private const string OpenApiName = "HelpManCommanderOpenAPISpecification";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,16 +40,43 @@ namespace HelpmanCommander.API
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                                                        options.UseSqlServer(
+                                                            Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ICompetitionRepository, CompetitionRepository>();
 
             services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddDefaultUI(UIFramework.Bootstrap4)
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAutoMapper();
+
+            services.AddSwaggerGen(setupACtion =>
+            {
+                setupACtion.SwaggerDoc(Configuration.GetValue<string>("OpenApi:Name", "DefaulApiName"), new OpenApiInfo()
+                {
+                    Title = Configuration.GetValue<string>("OpenApi:DisplayName", "API name missing from configuration"),
+                    Version = Configuration.GetValue<string>("OpenApi:Version"),
+                    Description = Configuration.GetValue<string>("OpenApi:Description", "Description is missing from configuration"),
+                    Contact = new OpenApiContact()
+                    {
+                        Email = Configuration.GetValue<string>("Contact:Email"),
+                        Name = Configuration.GetValue<string>("Contact:Name"),
+                        Url = new Uri(Configuration.GetValue<string>("Contact:Url"))
+                    }
+                });
+
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+                setupACtion.IncludeXmlComments(xmlCommentsFullPath, true);
+            });
+
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+            });
 
             services.AddMvc(setupAction =>
             {
@@ -93,6 +126,19 @@ namespace HelpmanCommander.API
             }
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
+
+            var swaggerUrl = Configuration.GetValue<string>("OpenApi:Url", "n/a");
+            var apiName = Configuration.GetValue<string>("OpenApi:DisplayName", "API name missing from configuration");
+
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint(
+                    swaggerUrl,
+                    apiName);
+                setupAction.RoutePrefix = "";
+            });
+
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

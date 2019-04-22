@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Routing;
 
 namespace HelpmanCommander.API.Controllers
 {
+    /// <summary>
+    /// Managing stations which is a sub-entity of a competition. A competition is made up of multiple stations.
+    /// </summary>
     [Route("api/competitions/{competitionId}/[controller]")]
     [ApiController]
     public class StationsController : ControllerBase
@@ -18,6 +21,13 @@ namespace HelpmanCommander.API.Controllers
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
 
+        /// <summary>
+        /// Initilizes a new instance of the <see cref="StationsController" /> class
+        /// with ICompetitionRepository, AutoMapper and LinkGenerator.
+        /// </summary>
+        /// <param name="repository">ICompetitionRepository</param>
+        /// <param name="mapper">AutoMapper</param>
+        /// <param name="linkGenerator">LinkGenerator</param>
         public StationsController(ICompetitionRepository repository,
                                     IMapper mapper,
                                     LinkGenerator linkGenerator)
@@ -27,6 +37,13 @@ namespace HelpmanCommander.API.Controllers
             _linkGenerator = linkGenerator;
         }
 
+        /// <summary>
+        /// List all station for a competition.
+        /// </summary>
+        /// <param name="competitionId">The id of competition</param>
+        /// <returns>Returns all station in an array. </returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<ActionResult<StationModel[]>> Get(int competitionId)
         {
@@ -41,6 +58,16 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Find a station in a competition by stationId.
+        /// </summary>
+        /// <param name="competitionId">The id of competition.</param>
+        /// <param name="id">The id of station to return.</param>
+        /// <returns>Returns a single StationModel</returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<StationModel>> Get(int competitionId, int id)
         {
@@ -60,6 +87,15 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Add a new station to a competition.
+        /// </summary>
+        /// <param name="competitionId">The id of competition which will be extended with new station.</param>
+        /// <param name="model"><see cref="StationModel"/> object that needs to be added to the competition.</param>
+        /// <returns>Created <see cref="StationModel"/>.</returns>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
         public async Task<ActionResult<StationModel>> Post(int competitionId, StationModel model)
         {
@@ -88,6 +124,17 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update an existing station of a competition.
+        /// </summary>
+        /// <param name="competitionId">The id of competition where the station belongs to.</param>
+        /// <param name="model">Updated station model.</param>
+        /// <param name="id">ID of the station that needs to be updated.</param>
+        /// <returns></returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int competitionId, StationModel model, int id)
         {
@@ -110,6 +157,15 @@ namespace HelpmanCommander.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a station in a competition.
+        /// </summary>
+        /// <param name="competitionId">The id of competition where the station belongs to.</param>
+        /// <param name="id">The id of the station that needs to be deleted.</param>
+        /// <returns>No content in case of success.</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int competitionId, int id)
         {
