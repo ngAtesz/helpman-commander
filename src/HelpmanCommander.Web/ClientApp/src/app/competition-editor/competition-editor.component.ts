@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CompetitionEditorComponent implements OnInit {
   public competitions: any[];
+  public createStarted = false;
 
   constructor(http: HttpClient, @Inject('API_BASE_URL') baseUrl: string) {
     http.get<any[]>(baseUrl + 'competitions')
@@ -20,4 +21,7 @@ export class CompetitionEditorComponent implements OnInit {
   ngOnInit() {
   }
 
+  startCreate() {
+    this.createStarted = true;
+  }
 }
