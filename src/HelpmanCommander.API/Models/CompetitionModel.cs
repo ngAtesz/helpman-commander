@@ -21,6 +21,8 @@ namespace HelpmanCommander.API.Models
 
         public string OwnerId { get; set; }
 
+        public int CategoryId { get; set; }
+
         public ICollection<StationModel> Stations { get; set; }
     }
 }

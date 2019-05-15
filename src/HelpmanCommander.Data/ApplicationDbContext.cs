@@ -11,6 +11,8 @@ namespace HelpmanCommander.Data
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Task> Tasks { get; set; }
 
+        public DbSet<Category> Categories { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

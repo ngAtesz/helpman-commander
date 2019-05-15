@@ -29,7 +29,10 @@ namespace HelpmanCommander.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -41,14 +44,11 @@ namespace HelpmanCommander.API
 
             services.AddDbContext<ApplicationDbContext>(options =>
                                                         options.UseSqlServer(
-                                                            Configuration.GetConnectionString("DefaultConnection")));
+                                                            Configuration.GetConnectionString("DefaultConnection"),
+                                                            x => x.MigrationsAssembly("HelpmanCommander.Data")));
 
             services.AddScoped<ICompetitionRepository, CompetitionRepository>();
-
-            services.AddDefaultIdentity<IdentityUser>()
-                    .AddDefaultUI(UIFramework.Bootstrap4)
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            
             services.AddAutoMapper();
 
             services.AddSwaggerGen(setupACtion =>
