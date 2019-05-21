@@ -1,25 +1,25 @@
 <div>
-  <button class="btn btn-primary" (click)="startCreate()">Új verseny létrehozása</button>
+  <button mat-raised-button color="primary" class="mat-raised-button" (click)="startCreate()">Új verseny létrehozása</button>
   <div class="container collapse mt-3 border border-dark" [ngClass]='{"show": createStarted}'>
-    <div class="row mb-2 mt-2">
+    <div fxLayout="row" fxLayoutAlign="space-evenly stretch">
       <div class="col-2">Település</div>
       <div class="col-3">
         <input type="text" value="" placeholder="Város" [(ngModel)]="newCompetition.city" />
       </div>
     </div>
-    <div class="row mb-2 mt-2">
-      <div class="col-2">Kategória</div>
-      <div class="col-3">
+    <div flex fxLayout="row">
+      <div fxFlex="40">Kategória</div>
+      <div fxFlex="60">
         <input type="text" value="" placeholder="Kategória" [(ngModel)]="newCompetition.category" />
       </div>
     </div>
-    <div class="row mb-2 mt-2">
+    <div flex fxLayout="row">
       <div class="col-2">Időpont</div>
       <div class="col-3">
         <input type="text" placeholder="Dátum" [(ngModel)]="newCompetition.date" />
       </div>
     </div>
-    <div class="row mb-2 mt-2">
+    <div flex fxLayout="row">
       <div class="col offset-md-2">
         <button type="button" class="btn btn-secondary mr-2" (click)="cancel()">
           Mégse

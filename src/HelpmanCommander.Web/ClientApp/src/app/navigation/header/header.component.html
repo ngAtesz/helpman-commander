@@ -1,0 +1,33 @@
+<mat-toolbar class="mat-elevation-z6 nav">
+  <mat-toolbar-row>
+    <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <button mat-button [routerLink]='["/"]'>
+      <img class="navbar-logo" src="../../assets/oev-logo.png" alt="Országos Elsősegélynyújtó Verseny Portál" />
+    </button>
+    <div fxFlex fxLayout fxLayoutAlign="end" [fxShow]="true" fxHide.lt-sm>
+      <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+        <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+          <a class="nav-link text-dark" [routerLink]='["/competition"]'>Feladatgyűjtemény</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]='["link-active"]'>
+          <a class="nav-link text-dark" [routerLink]='["/results"]'>Eredmények</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]='["link-active"]'>
+          <a class="nav-link text-dark" [routerLink]='["/competition-editor"]'>Verseny szerkesztés</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]='["link-active"]'>
+          <a class="nav-link text-dark" [routerLink]='["/office"]'>Versenyiroda</a>
+        </li>
+      </ul>
+      <span class="menu-spacer"></span>
+      <form>
+        <a class="nav-link text-dark">HelpMan</a>
+        <button type="button" mat-flat-button color="primary">Logout</button>
+      </form>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
