@@ -9,7 +9,7 @@ export function getBaseUrl() {
 }
 
 export function getApiBaseUrl() {
-  return "https://localhost:44311/api/";
+  return 'https://localhost:44311/api/';
 }
 
 const providers = [

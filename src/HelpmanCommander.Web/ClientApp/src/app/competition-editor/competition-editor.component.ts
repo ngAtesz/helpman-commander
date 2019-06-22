@@ -10,9 +10,9 @@ export class CompetitionEditorComponent implements OnInit {
   public competitions: any[];
   public createStarted = false;
   public newCompetition = {
-    city: "",
-    date: "",
-    category: ""
+    city: '',
+    date: '',
+    category: ''
   };
 
   constructor(http: HttpClient, @Inject('API_BASE_URL') baseUrl: string) {
@@ -32,9 +32,9 @@ export class CompetitionEditorComponent implements OnInit {
 
   cancel() {
     this.newCompetition = {
-      city: "",
-      date: "",
-      category: ""
+      city: '',
+      date: '',
+      category: ''
     };
     this.createStarted = false;
   }
