@@ -1,14 +1,71 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+<div class="menu-grid">
+  <mat-grid-list [cols]="12" [rowHeight]="250" gutterSize="15px">
+    <mat-grid-tile [colspan]="4"></mat-grid-tile>
+    <mat-grid-tile colspan="2" >
+      <mat-card [routerLink]="['/exerise-book']"
+              routerLinkActive="router-link-active"
+              [style.background]="'red'">
+        <mat-card-header>
+          <mat-card-title>Feladatgyűjtemény</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-icon aria-hidden="false" aria-label="Feladatgyűtemény ikon">library_books</mat-icon>
+          <p>
+            Itt a korábbi versenyfeladatok leírásai és azokhoz tartozó imitációs forgatókönyvek közöttt böngészhetsz.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <mat-card [routerLink]="['/results']"
+                routerLinkActive="router-link-active"
+                [style.background]="'lightblue'">
+        <mat-card-header>
+          <mat-card-title>Eredmények</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-icon aria-hidden="false" aria-label="Eredmények ikon">insert_chart</mat-icon>
+          <p>
+            Ebben a menüpontban megtalálhatod az előző évek versenyeredményeit.
+            Utána nézhetsz a helyezéseknek, pontszámoknak és a csapatok helyszíni nevezési lapjainak.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4"></mat-grid-tile>
+    <mat-grid-tile colspan="4"></mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <mat-card [routerLink]="['/competition-editor']"
+                routerLinkActive="router-link-active"
+                [style.background]="'yellow'">
+        <mat-card-header>
+          <mat-card-title>Verseny szerkesztése</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-icon aria-hidden="false" aria-label="Verseny szerkesztése ikon">edit</mat-icon>
+          <p>
+            Új versenyeket hozhatsz létre, módosíthatod a már melévőeket vagy véglegesítheted azok feladatlistáját.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <mat-card [routerLink]="['/dispatcher-office']"
+                routerLinkActive="router-link-active"
+                [style.background]="'green'">
+        <mat-card-header>
+          <mat-card-title>Versenyiroda</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <mat-icon aria-hidden="false" aria-label="Versenyiroda ikon">traffic</mat-icon>
+          </div>
+          <p>
+            Ha nem tudod, hogy mi ez valószínűleg úgy sincs jogosultságod belépni id. :)
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4"></mat-grid-tile>
+  </mat-grid-list>
+</div>

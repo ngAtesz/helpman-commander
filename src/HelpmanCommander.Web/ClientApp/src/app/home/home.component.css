@@ -1,0 +1,45 @@
+.menu-grid {
+  padding: 10px 0;
+  align-items: center;
+  justify-items: center;
+}
+
+.mat-grid-tile {
+  min-height: 300px;
+  min-width: 300px;;
+}
+
+.mat-card {
+  min-height: 200px;
+  min-width: 200px;
+  margin: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid darkgray;
+}
+
+.mat-card-header {
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.mat-card-title {
+  font-weight: bold;
+  margin-bottom: 0 !important;
+}
+
+.mat-card-content {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 15px 5px 5px 5px;
+}
+
+.mat-card-content p {
+  margin: 15px 0;
+}
+
+.mat-icon {
+  transform: scale(2);
+}
