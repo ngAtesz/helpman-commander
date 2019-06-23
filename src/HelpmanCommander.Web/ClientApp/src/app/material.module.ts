@@ -12,7 +12,13 @@ import {
   MatPaginatorModule,
   MatSortModule,
   MatCheckboxModule,
-  MatGridListModule
+  MatGridListModule,
+  MatFormFieldModule,
+  MatDatepickerModule,
+  MatSelectModule,
+  MatNativeDateModule,
+  MatInputModule,
+  MatExpansionModule
 } from '@angular/material';
 
 @NgModule({
@@ -28,7 +34,13 @@ import {
         MatPaginatorModule,
         MatSortModule,
         MatCheckboxModule,
-        MatGridListModule
+        MatGridListModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSelectModule,
+        MatInputModule,
+        MatExpansionModule
     ],
     exports: [
         MatButtonModule,
@@ -42,7 +54,13 @@ import {
         MatPaginatorModule,
         MatSortModule,
         MatCheckboxModule,
-        MatGridListModule
+        MatGridListModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSelectModule,
+        MatInputModule,
+        MatExpansionModule
     ]
 })
 export class MaterialModule { }

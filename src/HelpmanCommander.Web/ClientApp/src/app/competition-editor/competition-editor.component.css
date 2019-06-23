@@ -1,3 +1,17 @@
 caption {
   caption-side: top;
 }
+
+.competition-editor-card {
+  min-width: 120px;
+  max-width: 500px;
+}
+
+.mat-form-field {
+  margin: 5px 10px;
+}
+
+.mat-card-actions {
+  padding: 0 10px;
+  text-align: center;
+}

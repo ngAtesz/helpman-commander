@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-competition-editor',
@@ -9,13 +10,20 @@ import { HttpClient } from '@angular/common/http';
 export class CompetitionEditorComponent implements OnInit {
   public competitions: any[];
   public createStarted = false;
-  public newCompetition = {
-    city: '',
-    date: '',
-    category: ''
-  };
 
-  constructor(http: HttpClient, @Inject('API_BASE_URL') baseUrl: string) {
+  newCompetitionForm = this.fb.group({
+    city: [null, Validators.required],
+    date: [null, Validators.required],
+    category: [null, Validators.required],
+  });
+
+  categories = [
+    { name: 'Gyermek', categoryId: 1},
+    { name: 'Ifjúsági', categoryId: 2},
+    { name: 'Felnőtt', categoryId: 3},
+  ];
+
+  constructor(http: HttpClient, @Inject('API_BASE_URL') baseUrl: string, private fb: FormBuilder) {
     http.get<any[]>(baseUrl + 'competitions')
       .subscribe(result => {
         this.competitions = result;
@@ -26,16 +34,16 @@ export class CompetitionEditorComponent implements OnInit {
   ngOnInit() {
   }
 
+  onSubmit() {
+  }
+
   startCreate() {
     this.createStarted = true;
   }
 
   cancel() {
-    this.newCompetition = {
-      city: '',
-      date: '',
-      category: ''
-    };
-    this.createStarted = false;
+    this.createStarted=false;
+    this.newCompetitionForm.reset();
+    this.newCompetitionForm.clearValidators();
   }
 }

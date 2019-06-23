@@ -1,64 +1,39 @@
 <div>
-  <button mat-raised-button color="primary" class="mat-raised-button" (click)="startCreate()">Új verseny létrehozása</button>
-  <div class="container collapse mt-3 border border-dark" [ngClass]='{"show": createStarted}'>
-    <div fxLayout="row" fxLayoutAlign="space-evenly stretch">
-      <div class="col-2">Település</div>
-      <div class="col-3">
-        <input type="text" value="" placeholder="Város" [(ngModel)]="newCompetition.city" />
-      </div>
-    </div>
-    <div flex fxLayout="row">
-      <div fxFlex="40">Kategória</div>
-      <div fxFlex="60">
-        <input type="text" value="" placeholder="Kategória" [(ngModel)]="newCompetition.category" />
-      </div>
-    </div>
-    <div flex fxLayout="row">
-      <div class="col-2">Időpont</div>
-      <div class="col-3">
-        <input type="text" placeholder="Dátum" [(ngModel)]="newCompetition.date" />
-      </div>
-    </div>
-    <div flex fxLayout="row">
-      <div class="col offset-md-2">
-        <button type="button" class="btn btn-secondary mr-2" (click)="cancel()">
-          Mégse
-        </button>
-        <button type="submit" class="btn btn-primary">
-          Mentés
-        </button>
-      </div>
-    </div>
-  </div>
-  <table class="table table-hover table-striped table-bordered text-center" *ngIf="competitions">
-    <caption>Előkészületben lévő versenyek</caption>
-    <thead>
-      <tr>
-        <th scope="col">Kategória</th>
-        <th scope="col">Évszám</th>
-        <th scope="col">Dátum</th>
-        <th scope="col">Véglegesítve</th>
-        <th scope="col" class="w-auto"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let competition of competitions">
-        <td>{{ competition.category }}</td>
-        <td>{{ competition.dateOfEvent | date:'yyyy' }}</td>
-        <td>{{ competition.dateOfEvent | date:'yyyy.MM.dd.' }}</td>
-        <td>
-          <div class="text-center">
-            <span class="fa fa-check fa-lg" *ngIf="competition.finalized"></span>
-            <span class="far fa-square fa-lg" *ngIf="!competition.finalized"></span>
-          </div>
-        </td>
-        <td>
-          <div>
-            <span class="fa fa-edit fa-lg"></span>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <mat-expansion-panel (opened)="startCreate()" (closed)="cancel()" [expanded]="createStarted">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Verseny létrehozás
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="newCompetitionForm" novalidate (ngSubmit)="onSubmit()" *ngIf="createStarted">
+      <mat-card class="competition-editor-card">
+        <mat-card-header>
+          <mat-card-title>Verseny adatok</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field>
+            <input matInput placeholder="Város" formControlName="city" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="Kategória" formControlName="category">
+              <mat-option *ngFor="let cat of categories" [value]="cat.categoryId">
+                {{ cat.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Válassz időpontot" formControlName="date" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit">Létrehozás</button>
+          <button mat-raised-button type="button" (click)="cancel()">Mégse</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </mat-expansion-panel>
+
   <app-competition-list></app-competition-list>
 </div>
