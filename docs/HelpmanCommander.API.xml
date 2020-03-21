@@ -216,5 +216,11 @@
             <param name="id">The id of the task that needs to be deleted.</param>
             <returns>No content in case of success.</returns>
         </member>
+        <member name="M:HelpmanCommander.API.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
     </members>
 </doc>

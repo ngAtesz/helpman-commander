@@ -19,11 +19,27 @@ namespace HelpmanCommander.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("HelpmanCommander.Data.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("HelpmanCommander.Data.Entities.Competition", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CategoryId");
 
                     b.Property<DateTime?>("DateOfEvent");
 
@@ -40,6 +56,8 @@ namespace HelpmanCommander.Data.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("OwnerId");
 
@@ -59,7 +77,7 @@ namespace HelpmanCommander.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<int?>("StationId");
+                    b.Property<int>("StationId");
 
                     b.HasKey("Id");
 
@@ -249,11 +267,9 @@ namespace HelpmanCommander.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("ProviderKey")
-                        .HasMaxLength(128);
+                    b.Property<string>("ProviderKey");
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -284,11 +300,9 @@ namespace HelpmanCommander.Data.Migrations
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(128);
+                    b.Property<string>("Name");
 
                     b.Property<string>("Value");
 
@@ -299,6 +313,10 @@ namespace HelpmanCommander.Data.Migrations
 
             modelBuilder.Entity("HelpmanCommander.Data.Entities.Competition", b =>
                 {
+                    b.HasOne("HelpmanCommander.Data.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
@@ -307,9 +325,10 @@ namespace HelpmanCommander.Data.Migrations
 
             modelBuilder.Entity("HelpmanCommander.Data.Entities.Exercise", b =>
                 {
-                    b.HasOne("HelpmanCommander.Data.Entities.Station")
+                    b.HasOne("HelpmanCommander.Data.Entities.Station", "Station")
                         .WithMany("Exercises")
-                        .HasForeignKey("StationId");
+                        .HasForeignKey("StationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HelpmanCommander.Data.Entities.ExerciseTask", b =>

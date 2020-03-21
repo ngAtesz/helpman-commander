@@ -1,0 +1,71 @@
+<div class="menu-grid">
+  <mat-grid-list [cols]="12" [rowHeight]="250" gutterSize="15px">
+    <mat-grid-tile [colspan]="4"></mat-grid-tile>
+    <mat-grid-tile colspan="2" >
+      <mat-card [routerLink]="['/exerise-book']"
+              routerLinkActive="router-link-active"
+              [style.background]="'red'">
+        <mat-card-header>
+          <mat-card-title>Feladatgyűjtemény</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-icon aria-hidden="false" aria-label="Feladatgyűtemény ikon">library_books</mat-icon>
+          <p>
+            Itt a korábbi versenyfeladatok leírásai és azokhoz tartozó imitációs forgatókönyvek közöttt böngészhetsz.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <mat-card [routerLink]="['/results']"
+                routerLinkActive="router-link-active"
+                [style.background]="'lightblue'">
+        <mat-card-header>
+          <mat-card-title>Eredmények</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-icon aria-hidden="false" aria-label="Eredmények ikon">insert_chart</mat-icon>
+          <p>
+            Ebben a menüpontban megtalálhatod az előző évek versenyeredményeit.
+            Utána nézhetsz a helyezéseknek, pontszámoknak és a csapatok helyszíni nevezési lapjainak.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4"></mat-grid-tile>
+    <mat-grid-tile colspan="4"></mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <mat-card [routerLink]="['/competition-editor']"
+                routerLinkActive="router-link-active"
+                [style.background]="'yellow'">
+        <mat-card-header>
+          <mat-card-title>Verseny szerkesztése</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-icon aria-hidden="false" aria-label="Verseny szerkesztése ikon">edit</mat-icon>
+          <p>
+            Új versenyeket hozhatsz létre, módosíthatod a már melévőeket vagy véglegesítheted azok feladatlistáját.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <mat-card [routerLink]="['/dispatcher-office']"
+                routerLinkActive="router-link-active"
+                [style.background]="'green'">
+        <mat-card-header>
+          <mat-card-title>Versenyiroda</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <mat-icon aria-hidden="false" aria-label="Versenyiroda ikon">traffic</mat-icon>
+          </div>
+          <p>
+            Ha nem tudod, hogy mi ez valószínűleg úgy sincs jogosultságod belépni id. :)
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4"></mat-grid-tile>
+  </mat-grid-list>
+</div>

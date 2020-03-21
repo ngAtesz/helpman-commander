@@ -3,8 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +13,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 using HelpmanCommander.Data;
+using Microsoft.Extensions.Hosting;
 
 namespace HelpmanCommander.API
 {
     public class Startup
     {
+        private const string AllowWebClientOrigin = "_allowWebClientOrigin";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,7 +28,10 @@ namespace HelpmanCommander.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -39,13 +43,10 @@ namespace HelpmanCommander.API
 
             services.AddDbContext<ApplicationDbContext>(options =>
                                                         options.UseSqlServer(
-                                                            Configuration.GetConnectionString("DefaultConnection")));
+                                                            Configuration.GetConnectionString("DefaultConnection"),
+                                                            x => x.MigrationsAssembly("HelpmanCommander.Data")));
 
             services.AddScoped<ICompetitionRepository, CompetitionRepository>();
-
-            services.AddDefaultIdentity<IdentityUser>()
-                    .AddDefaultUI(UIFramework.Bootstrap4)
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAutoMapper();
 
@@ -70,13 +71,25 @@ namespace HelpmanCommander.API
                 setupACtion.IncludeXmlComments(xmlCommentsFullPath, true);
             });
 
+            services.AddCors(setupAction =>
+            {
+                setupAction.AddPolicy(AllowWebClientOrigin, builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200",
+                                        "https://localhost:44339")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                });
+            });
+
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = true;
             });
 
-            services.AddMvc(setupAction =>
+
+            services.AddControllers(setupAction =>
             {
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
                 setupAction.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
@@ -88,7 +101,7 @@ namespace HelpmanCommander.API
                 setupAction.ReturnHttpNotAcceptable = true;
 
                 var jsonOutputFormatter = setupAction.OutputFormatters
-                                                    .OfType<JsonOutputFormatter>()
+                                                    .OfType<NewtonsoftJsonOutputFormatter>()
                                                     .FirstOrDefault();
 
                 if (jsonOutputFormatter != null)
@@ -100,12 +113,18 @@ namespace HelpmanCommander.API
                         jsonOutputFormatter.SupportedMediaTypes.Remove("text/json");
                     }
                 }
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            });
+
+            #region IIS configuration
+            services.Configure<IISServerOptions>(options =>
+                {
+                    options.AutomaticAuthentication = false;
+                });
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -126,6 +145,8 @@ namespace HelpmanCommander.API
                 app.UseHsts();
             }
 
+            app.UseCors(AllowWebClientOrigin);
+
             app.UseHttpsRedirection();
             app.UseSwagger();
 
@@ -143,9 +164,14 @@ namespace HelpmanCommander.API
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseRouting();
+
             app.UseAuthentication();
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

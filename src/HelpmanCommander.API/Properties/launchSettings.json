@@ -2,8 +2,12 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/HelpmanCommander.API",
+      "sslPort": 0
+    },
     "iisExpress": {
-      "applicationUrl": "http://localhost:1921",
+      "applicationUrl": "http://localhost:1922",
       "sslPort": 44311
     }
   },

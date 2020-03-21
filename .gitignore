@@ -547,3 +547,4 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/rider,aspnetcore,visualstudio,visualstudiocode
+docs/helpman-commander-openapi-swagger.json

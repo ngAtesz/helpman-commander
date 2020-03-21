@@ -14,10 +14,10 @@ namespace HelpmanCommander.Data.Entities
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
-        
+
         [MaxLength(100)]
         public string Location { get; set; }
-        
+
         public DateTime? DateOfEvent { get; set; }
 
         [Required]
@@ -29,6 +29,11 @@ namespace HelpmanCommander.Data.Entities
 
         [ForeignKey(nameof(OwnerId))]
         public virtual IdentityUser Owner { get; set; }
+
+        public int? CategoryId { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
+        public virtual Category Category { get; set; }
 
         public virtual ICollection<Station> Stations { get; set; }
     }
